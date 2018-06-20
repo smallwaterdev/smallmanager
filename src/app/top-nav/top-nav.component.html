@@ -1,0 +1,31 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" routerLink="" routerLinkActive="active">SmallManager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarData" aria-controls="navbarData" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarData">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item">
+                  <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/meta" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Meta</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/list" routerLinkActive="active">List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/content" routerLinkActive="active">Content</a>
+              </li>
+              
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <input type="text" class="form-control mr-sm-2" placeholder="Id" #input>
+            <button class="btn btn-outline-white my-2 my-sm-0" (click)="searchId(input.value)">Search</button>
+          </div>
+        </div>
+        </div>
+</nav>
+<div style="margin-top:60px"></div>

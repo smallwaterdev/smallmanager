@@ -1,0 +1,20 @@
+<smallmanager-last-next-btn></smallmanager-last-next-btn>
+<div class="container">
+  <h4>Content list</h4>
+  <ul *ngIf="contentIds" class="list-unstyled">
+    <li class="media mb-2" *ngFor="let id of contentIds">
+      <a routerLink="/content/{{id}}">
+        <img class="mr-3" [src]="contents.get(id).imgSummaryUrl" onerror="this.onerror=null;this.src='/assets/images/photo_not_available.jpg';" width="200">
+      </a>
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">{{contents.get(id).title}}</h5>
+        <p>
+          IndexUrl: <a [href]="contents.get(id).indexUrl" target="_blank">{{contents.get(id).indexUrl}}</a><br>
+          Genres: {{contents.get(id).genres}}<br>
+          Duration: {{contents.get(id).duration}}
+        </p>
+        <hr>
+      </div>   
+    </li>
+  </ul>
+</div>

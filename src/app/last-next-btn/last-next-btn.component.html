@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="mb-4">
+
+      </div>
+  <div class="row">
+    <div class="mx-auto">
+      <div class="input-group" role="group" aria-label="page contorl">
+        <div class="input-group-prepend">
+            <button type="button" class="btn btn-dark" (click)="fastback()"><<</button>
+            <button type="button" class="btn btn-dark" (click)="back()"><</button>
+          <button *ngFor="let page of pagearray" [ngClass]="{'btn': true, 'btn-secondary': page === currentPage, 'btn-dark': page !== currentPage}" type="button" (click)="goto(page)">{{page}}</button>
+        </div>
+        
+        <div class="input-group-append">
+  
+          <button type="button" class="btn btn-dark" (click)="next()">></button>
+          <button type="button" class="btn btn-dark" (click)="fastnext()">>></button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="mb-4">
+
+  </div>
+</div>
+

@@ -1,0 +1,8 @@
+<div class="container">
+  <h4>Error messages</h4>
+  <div *ngIf="errorMsg.messages.length">
+        <button class="clear"
+                (click)="errorMsg.clear()">clear</button>
+        <div *ngFor='let message of errorMsg.messages'> {{message}} </div>
+    </div>
+</div>

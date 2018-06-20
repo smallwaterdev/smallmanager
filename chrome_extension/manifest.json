@@ -1,0 +1,75 @@
+{
+  "name": "videoConverter",
+  "version": "1.0",
+  "description": "convert embeded video to a video tag",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "declarativeContent", 
+    "storage",
+    "https://www.rapidvideo.com/*",
+    "https://www.fembed.com/*",
+    "https://openload.co/*",
+    "https://localhost:3444/*"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["jquery-3.3.1.js", "background.js"],
+    "persistent": false
+  },
+  "externally_connectable": {
+    "matches": ["https://openload.co/stream"]
+  },
+  "content_scripts":[
+    {
+      "matches": ["http://localhost:4200/*"],
+      "run_at": "document_idle",
+      "js": ["jquery-3.3.1.js", "content.js"],
+      "all_frames":true
+    },
+    {
+      "matches":["https://www.rapidvideo.com/e"],
+      "run_at":"document_idle",
+      "css":["video-js.css"],
+      "js":["jquery-3.3.1.js","video.js", "rapidvideo_converter.js", "video_converter.js"],
+      "all_frames":true
+    },
+    {
+      "matches":["https://www.fembed.com/v"],
+      "run_at":"document_idle",
+      "css":["video-js.css"],
+      "js":["jquery-3.3.1.js","video.js", "fembed_converter.js", "video_converter.js"],
+      "all_frames":true
+    },
+    {
+      "matches":["https://openload.co/embed"],
+      "run_at":"document_idle",
+      "css":["video-js.css"],
+      "js":["jquery-3.3.1.js","video.js", "openload_converter.js", "video_converter.js"],
+      "all_frames":true
+    },
+    {
+      "matches":["https://localhost:3444/*"],
+      "run_at":"document_idle",
+      "css":["video-js.css"],
+      "js":["jquery-3.3.1.js","openload_decrypt.js"],
+      "all_frames":true
+    }
+  ],
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/get_started16.png",
+      "32": "images/get_started32.png",
+      "48": "images/get_started48.png",
+      "128": "images/get_started128.png"
+    }
+  },
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  },
+  "manifest_version": 2
+}

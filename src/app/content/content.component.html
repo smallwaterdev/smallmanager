@@ -1,0 +1,116 @@
+
+<div id="meta-data" *ngIf="content">
+  <p></p>
+  <table id="mp4urls" *ngIf="content">
+    <tr *ngFor="let url of content.videoUrls">
+      <td>{{url.resolution}}</td><td>{{url.videoUrl}}</td>
+    </tr>
+  </table>
+  <p id="e-domain">{{content.domain}}</p>
+  <p id="e-posterUrl">{{content.imgSummaryUrl}}</p>
+  <p id="e-videoDomain">{{content.videoDomain}}</p>
+  <p id="e-videoUrl">{{content.videoUrl}}</p>
+</div>
+<div class="container">
+  <h4>Content</h4>
+  <div *ngIf="content" class="btn-group mb-3" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-warning" (click)="edit_commit()">{{isEditing?'Commit':'Edit'}}</button>
+    <button type="button" class="btn btn-danger" (click)="remove()">Remove</button>
+    <button type="button" class="btn btn-success" (click)="refresh()">Refresh</button>
+  </div>
+  <p *ngIf="showRemoveMessage">Removed Successfully</p>
+  <p *ngIf="showUpdateMessage">Update Successfully</p>
+  <!--<div id="extensionPlayer" style="position: fixed; top:100px; right:100px;">
+
+  </div>-->
+  <div class="row" *ngIf="isEditing && modify_content">
+    <textarea [(ngModel)]="modify_content" rows="40" cols="100"></textarea>
+  </div>
+  <div class="row">
+      <table *ngIf="content" class="table table-striped">
+          <tbody>
+            <tr scope="row"><td>Id</td><td>{{content.id}}</td></tr>
+            <tr scope="row"><td>IndexUrl</td><td><a [href]="content.indexUrl" target="_blank">{{content.indexUrl}}</a></td></tr>
+            <tr scope="row"><td>Domain</td><td>{{content.domain}}</td></tr>
+            <tr scope="row"><td>Index</td><td>{{content.index}}</td></tr>
+            <tr scope="row"><td>Title</td><td>{{content.title}}</td></tr>
+            <tr scope="row">
+              <td>
+                Extension player
+              </td>
+              <td>
+                <div id="extensionPlayer">
+
+                </div>
+              </td>
+            </tr>
+            <tr scope="row"><td>Poster</td><td>{{content.imgSummaryUrl}}</td></tr>
+            <tr scope="row"><td>Poster Preview</td><td>
+              <div class="row">
+                <div class="col-md-5 col-12">
+                  <img [src]="content.imgSummaryUrl" width="100%">
+                </div>
+              </div>
+            </td></tr>
+            
+            <tr scope="row"><td>Video Url <br><button id="watchBtn" class="btn btn-primary" (click)="toggleVideoFrame()">Watch</button></td><td><p>{{content.videoUrl}}</p>
+              <video-frame [isDisplay]="isShowFrame" [videoUrl]="getFrameUrl()"></video-frame>
+            </td>
+            </tr>
+            <tr scope="row"><td>Video Urls</td>
+              <td>
+                
+                <ul>
+                  <li *ngFor="let url of content.videoUrls">
+                    {{url.resolution}} {{url.videoUrl}}
+                  </li>
+                </ul>
+              </td>  
+            </tr>
+            <tr scope="row"><td>Effective</td><td>{{content.effective}}</td></tr>
+            <tr scope="row"><td>Director</td><td>{{content.director}}</td></tr>
+            <tr scope="row"><td>Studio</td><td>{{content.studio}}</td></tr>
+            <tr scope="row"><td>Stars</td><td>
+              <ul>
+                  <li *ngFor="let starname of content.starnames">
+                    {{starname}}
+                  </li>
+                </ul>
+            </td></tr>
+            <tr scope="row"><td>Genres</td>
+              <td>
+                <ul>
+                  <li *ngFor="let genre of content.genres">
+                    {{genre}}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr scope="row"><td>Video Domain</td><td>{{content.videoDomain}}</td></tr>
+            <tr scope="row"><td>Duration</td><td>{{convertDuration(content.duration)}}</td></tr>
+            <tr scope="row"><td>Favorite</td><td>{{content.favorite}}</td></tr>
+            <tr scope="row"><td>Rating</td><td>{{content.rating}}</td></tr>
+            <tr scope="row"><td>Views</td><td>{{content.view}}</td></tr>
+            <tr scope="row"><td>CreatedAt</td><td>{{content.createdAt}}</td></tr>
+            <tr scope="row"><td>UpdatedAt</td><td>{{content.updatedAt}}</td></tr>
+            <tr scope="row"><td>Item version</td><td>{{content.version}}</td></tr>
+            <tr scope="row"><td>Release on</td><td>{{content.releaseDate}}</td></tr>
+            <tr scope="row">
+              <td>
+                <div>Pictures</div>
+                <div><button class="btn btn-primary" (click)="togglePreviewPictures()">{{Pictures_Button_Text}}</button></div>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let picture of content.imgPreviewUrls">
+                    {{picture}}
+                  </li>
+                </ul>
+                <preview-picture-gallery *ngIf="isShowPreviewPictures" [pictureUrls]="content.imgPreviewUrls"></preview-picture-gallery>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>
+

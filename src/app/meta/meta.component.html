@@ -1,0 +1,67 @@
+
+
+   
+<div class="container">
+  <h4>Meta <button class="btn btn-primary" (click)="refreshAll()">Refresh</button></h4>
+
+  <div class="row">
+    <mat-tab-group>
+      <mat-tab *ngFor="let field of fields" [label]="captalize(field)">
+        <h5>{{captalize(field)}} {{keys.get(field).length}}</h5> 
+        <table class="table">
+            <thead><tr><th>#</th><th>{{captalize(field)}}</th><th>number</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let item of keys.get(field); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/' + field +'/' + item">{{item}}</a></td><td>{{meta.get(field)[item]}}</td></tr>
+            </tbody>
+        </table>
+      </mat-tab>
+   </mat-tab-group>
+        
+    <!--<div class="col-12 col-md-6">
+      <h5>Genre <span style="font-style:italic">{{keys.get('genre').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>genre</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('genre'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/genre/' + item">{{item}}</a></td><td>{{meta.get('genre')[item]}}</td></tr>
+        </tbody>
+      </table>
+      <h5>Starname <span style="font-style:italic">{{keys.get('starname').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>starname</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('starname'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/starname/' + item">{{item}}</a></td><td>{{meta.get('starname')[item]}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-md-6">
+      <h5>Domain <span style="font-style:italic">{{keys.get('domain').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>domain</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('domain'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/domain/' + item">{{item}}</a></td><td>{{meta.get('domain')[item]}}</td></tr>
+        </tbody>
+      </table>
+      <h5>VideoDomain <span style="font-style:italic">{{keys.get('videoDomain').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>video domain</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('videoDomain'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/videoDomain/' + item">{{item}}</a></td><td>{{meta.get('videoDomain')[item]}}</td></tr>
+        </tbody>
+      </table>
+      <h5>director <span style="font-style:italic">{{keys.get('director').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>director</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('director'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/director/' + item">{{item}}</a></td><td>{{meta.get('director')[item]}}</td></tr>
+        </tbody>
+      </table>
+      <h5>Studio <span style="font-style:italic">{{keys.get('studio').length}}</span></h5>
+      <table class="table">
+        <thead><tr><th>#</th><th>studio</th><th>number</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of keys.get('studio'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/studio/' + item">{{item}}</a></td><td>{{meta.get('studio')[item]}}</td></tr>
+        </tbody>
+      </table>
+    </div>-->
+  </div>
+</div>

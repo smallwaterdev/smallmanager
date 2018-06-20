@@ -1,0 +1,25 @@
+<div class="container">
+  <h4>Search</h4>
+  <div class="row">
+    <div class="col-12">
+        <div class="input-group mb-3">
+            <div ngbDropdown class="input-group-prepend">
+                <button class="btn btn-outline-primary" id="searchField" ngbDropdownToggle>{{currentField}}</button>
+                <div ngbDropdownMenu aria-labelledby="searchField">
+                  <button *ngFor="let field of supportFields" class="dropdown-item" [value]="field" #changeFieldBtn (click)="changeField(changeFieldBtn)">{{capitalize(field)}}</button>
+                </div>
+            </div>
+            <!--<input *ngIf="!currentValue" type="text" class="form-control" placeholder="Search..." #searchInput (keyup.enter)="search(currentField, searchInput.value)">-->
+            <input type="text" class="form-control" [(ngModel)]="currentValue" #searchInput (keyup.enter)="search(currentField, searchInput.value)">
+          </div>
+    </div>
+    <div class="col-12">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button *ngFor="let sortfield of supportSorts" [disabled]="disable_sort" type="button" class="btn btn-secondary" (click)="sort(sortfield)">{{sortfield}}</button>
+        <!--<button type="button" class="btn btn-secondary" (click)="sort('rating')">Top rated</button>
+        <button type="button" class="btn btn-secondary" (click)="sort('createdAt')">Newest</button>
+        <button type="button" class="btn btn-secondary" (click)="sort('duration')">Longest</button>-->
+      </div>
+    </div>
+    </div>
+</div>

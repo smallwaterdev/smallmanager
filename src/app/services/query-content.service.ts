@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Content } from '../content';
 import { ErrorMessageService } from './error-message.service';
-
+import {smallData_manager_addr} from './config';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +12,7 @@ export class QueryContentService {
 
   contentCache: Map<string, Content>;
 
-  smallData_manager_addr:string = "http://192.168.1.100:3001";
+  smallData_manager_addr:string = smallData_manager_addr;
   constructor(private http: HttpClient, private errorMessage: ErrorMessageService) {
     
     console.log('[queryService] New Service Created');

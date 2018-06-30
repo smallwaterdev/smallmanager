@@ -1,0 +1,1 @@
+export const smallData_manager_addr = "http://128.110.153.109:3001";

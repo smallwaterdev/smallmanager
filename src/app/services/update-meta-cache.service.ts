@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { ErrorMessageService } from './error-message.service';
-
+import {smallData_manager_addr} from './config';
 @Injectable({
   providedIn: 'root'
 })
 export class UpdateMetaCacheService {
 
-  smallData_manager_addr:string = "http://192.168.1.100:3001";
+  smallData_manager_addr:string = smallData_manager_addr;
   constructor(private http: HttpClient, private errorMessage: ErrorMessageService) {
     
     console.log('[metaCache] New Service Created');

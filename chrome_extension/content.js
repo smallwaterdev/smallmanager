@@ -17,11 +17,11 @@ containerPages["openload.co"] = "https://openload.co/embed";
 const title = "[Content]";
 // register 
 chrome.runtime.sendMessage({from: "content", to:"background", request: "register"}, function(response) {
-    console.log(response);
+    console.log('[Content] register', response);
 });
 setInterval(()=>{
     chrome.runtime.sendMessage({from: "content", to:"background", request: "heartbeat"}, function(response) {
-        console.log(response);
+        console.log('[Content] heartbeat', response);
     });
 },6000);
 
@@ -34,7 +34,9 @@ function updateVideoPlayerFrameSize(width, height){
 function addNotAvailable(){
     $('#extensionPlayer').append(`<button id="extensionPlayerBtn" disabled class="btn btn-primary">${videoDomain} Not Supported</button>`);
 }
+
 function addTrigger(){
+    
     $('#extensionPlayer').append(`<button id="extensionPlayerBtn" disabled class="btn btn-primary">Play ${videoDomain}</button>`);
     $('#extensionPlayer').append(`<div id="extensionPlayerDiv"></div>`)
     //$('#extensionPlayerBtn').click(function(event){
@@ -80,11 +82,15 @@ function removeWatchBtn(){
     $('#watchBtn').remove();
 }
 function run(){
+    if(document.getElementById('extensionPlayerBtn')){
+        return;
+    }
     console.log(`Extension Content Script`);
     videoUrl = $('#e-videoUrl').html();
     posterUrl = $('#e-posterUrl').html();
     videoDomain = $('#e-videoDomain').html();
     if(support_video_domains.indexOf(videoDomain) !== -1){
+        
         addTrigger();
         //removeWatchBtn();
     }else{
@@ -94,9 +100,13 @@ function run(){
 
 // directly enter /content/xx, or refresh
 $(document).ready(()=>{
-    if(location.href.indexOf('/content/') !== -1){
+    $('body').append('<div id="extension-mounting-point"></div>');
+    $('#extension-mounting-point').click(()=>{
         run();
-    }
+    });
+    /*if(location.href.indexOf('/content/') !== -1){
+       run(); 
+    }*/
 });
 
 
@@ -123,7 +133,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse){
 
             case "run":{
                 // message from background when tab.updated
-                run();
+                //run();
+                /*$('body').append('<div id="extension-mounting-point"></div>');
+                $('#extension-mounting-point').click(()=>{
+                    run();
+                });*/
                 sendResponse({status:"success"});
             };break;
             default: break;

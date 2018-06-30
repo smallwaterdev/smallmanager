@@ -2,19 +2,187 @@
 
    
 <div class="container">
-  <h4>Meta <button class="btn btn-primary" (click)="refreshAll()">Refresh</button></h4>
-
+  <h4>Meta </h4>
+  <div class="btn-group" role="group" aria-label="control-panel">
+      <button class="btn btn-primary" (click)="refreshAll()">Refresh</button>
+      <button type="button" class="btn btn-warning" (click)="toggle_update()">Enable Update</button>
+      <button type="button" class="btn btn-primary" (click)="updateMetaCacheALL()">Update Meta All</button> 
+  </div>
   <div class="row">
+    
     <mat-tab-group>
-      <mat-tab *ngFor="let field of fields" [label]="captalize(field)">
-        <h5>{{captalize(field)}} {{keys.get(field).length}}</h5> 
+      <!-- domain -->
+      <mat-tab label="Domain">
+        <h5>Domain {{keys.get('domain').length}}</h5>
         <table class="table">
-            <thead><tr><th>#</th><th>{{captalize(field)}}</th><th>number</th></tr></thead>
+            <thead><tr><th>#</th><th>Domain</th><th>Number</th></tr></thead>
             <tbody>
-              <tr *ngFor="let item of keys.get(field); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/' + field +'/' + item">{{item}}</a></td><td>{{meta.get(field)[item]}}</td></tr>
+              <tr *ngFor="let item of keys.get('domain'); let i = index"><td>{{i+1}}</td><td><a [routerLink]="'/list/domain/' + item">{{item}}</a></td><td>{{meta.get('domain')[item]}}</td></tr>
             </tbody>
         </table>
       </mat-tab>
+      <!-- videoDomain-->
+      <mat-tab label="videoDomain">
+          <h5>VideoDomain {{keys.get('videoDomain').length}}</h5>
+         
+          <table class="table">
+              <thead><tr><th>#</th><th>VideoDomain</th><th>Delete</th><th>Number</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let item of keys.get('videoDomain'); let i = index">
+                  <td>{{i+1}}</td>
+                  <td><a [routerLink]="'/list/videoDomain/' + item">{{item}}</a></td>
+                  <td>
+                    <button class="btn btn-danger" [disabled]="disable_update" (click)="deleteField('videoDomain', item)">Delete</button>
+                  </td>
+                  <td>{{meta.get('videoDomain')[item]}}</td></tr>
+              </tbody>
+          </table>
+        </mat-tab>
+      <!-- genre -->
+      <mat-tab label="Genre">
+        <h5>Genre {{keys.get('genre').length}}</h5>
+        <p>
+          <button class="btn btn-primary" (click)="updateMetaCache('genre')">Update Meta Cache</button>&nbsp;&nbsp;
+          <button class="btn btn-primary" (click)="removeMetaCache('genre')">Remove Meta Cache</button>
+        </p>
+   
+        <table class="table">
+
+            <thead><tr><th>#</th><th>Genre</th><th>Meta</th><th>Delete</th><th>Update</th><th>Number</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let item of keys.get('genre'); let i = index">
+                <td>{{i+1}}</td>
+                <td><a [routerLink]="'/list/genre/' + item">{{item}}</a></td>
+                <td>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="profile url" #profileUrl (keyup.enter)="uploadProfile('genre', item, profileUrl.value)">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" (click)="removeMetaCache('genre',item)">Remove</button>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-danger" [disabled]="disable_update" (click)="deleteField('genre', item)">Delete</button>
+                </td>
+                <td>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" #newValue (keyup.enter)="updateField('genre', item, newValue.value)">
+                  </div>
+                </td>
+                <td>{{meta.get('genre')[item]}}</td></tr>
+            </tbody>
+        </table>
+      </mat-tab>
+      <!--starname-->
+      <mat-tab label="Starname">
+          <h5>Starname {{keys.get('starname').length}}</h5>
+          <p>
+            <button class="btn btn-primary" (click)="updateMetaCache('starname')">Update Meta Cache</button>&nbsp;&nbsp;
+            
+          </p>
+          <table class="table">
+              <thead><tr><th>#</th><th>Starname</th><th>Meta</th><th>Delete</th><th>Update</th><th>Number</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let item of keys.get('starname'); let i = index">
+                  <td>{{i+1}}</td>
+                  <td><a [routerLink]="'/list/starname/' + item">{{item}}</a></td>
+                  <td>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="profile url" #profileUrl (keyup.enter)="uploadProfile('starname', item, profileUrl.value)">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" (click)="removeMetaCache('starname',item)">Remove</button>
+                        </div>
+                      </div>
+                    </td>
+                  <td>
+                    <button class="btn btn-danger" [disabled]="disable_update" (click)="deleteField('starname', item)">Delete</button>
+                  </td>
+                  <td>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" #newValue (keyup.enter)="updateField('starname', item, newValue.value)">
+                    </div>
+                  </td>
+                  <td>{{meta.get('starname')[item]}}</td></tr>
+              </tbody>
+          </table>
+        </mat-tab>
+        <!--director-->
+        <mat-tab label="Director">
+            <h5>Director {{keys.get('director').length}}</h5>
+            <p>
+              <button class="btn btn-primary" (click)="updateMetaCache('director')">Update Meta Cache</button>
+            </p>
+            <table class="table">
+                <thead><tr><th>#</th><th>Director</th><th>Meta</th><th>Update</th><th>Number</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let item of keys.get('director'); let i = index">
+                    <td>{{i+1}}</td>
+                    <td><a [routerLink]="'/list/director/' + item">{{item}}</a></td>
+                    <td>
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" placeholder="profile url" #profileUrl (keyup.enter)="uploadProfile('studio', item, profileUrl.value)">
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" (click)="removeMetaCache('studio',item)">Remove</button>
+                          </div>
+                        </div>
+                      </td>
+                    <td>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" #newValue (keyup.enter)="updateField('director', item, newValue.value)">
+                      </div>
+                    </td>
+                    <td>{{meta.get('director')[item]}}</td></tr>
+                </tbody>
+            </table>
+          </mat-tab>
+        <!--studio-->
+        <mat-tab label="Studio">
+            <h5>Studio {{keys.get('studio').length}}</h5>
+            <p>
+              <button class="btn btn-primary" (click)="updateMetaCache('studio')">Update Meta Cache</button>&nbsp;&nbsp;
+              
+            </p>
+            <table class="table">
+                <thead><tr><th>#</th><th>Studio</th><th>Meta</th><th>Update</th><th>Number</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let item of keys.get('studio'); let i = index">
+                    <td>{{i+1}}</td>
+                    <td><a [routerLink]="'/list/studio/' + item">{{item}}</a></td>
+                    <td>
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" placeholder="profile url" #profileUrl (keyup.enter)="uploadProfile('studio', item, profileUrl.value)">
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" (click)="removeMetaCache('studio',item)">Remove</button>
+                          </div>
+                        </div>
+                      </td>
+                    <td>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" #newValue (keyup.enter)="updateField('studio', item, newValue.value)">
+                      </div>
+                    </td>
+                    <td>{{meta.get('studio')[item]}}</td></tr>
+                </tbody>
+            </table>
+          </mat-tab>
+        <!--<table *ngIf="field === 'videoDomain'"class="table">
+          <thead><tr><th>#</th><th>{{captalize(field)}}</th><th>Effective On</th><th>Effection Off</th><th>number</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let item of keys.get(field); let i = index">
+              <td>{{i+1}}</td>
+              <td><a [routerLink]="'/list/' + field +'/' + item">{{item}}</a></td>
+              <td>
+                <button class="btn btn-danger" [disabled]="disable_update" (click)="updateEffective(item, true)">On</button>
+              </td>
+              <td>
+                <button class="btn btn-danger" [disabled]="disable_update" (click)="updateEffective(item, false)">Off</button>
+              </td>
+              <td>{{meta.get(field)[item]}}</td></tr>
+          </tbody>
+      </table>-->
+      
+        
+      
    </mat-tab-group>
         
     <!--<div class="col-12 col-md-6">

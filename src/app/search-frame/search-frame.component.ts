@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import {  Router } from '@angular/router';
-import { UrlService} from '../url.service';
+import { UrlService} from '../services/url.service';
 @Component({
   selector: 'search-frame',
   templateUrl: './search-frame.component.html',
@@ -9,8 +9,8 @@ import { UrlService} from '../url.service';
 export class SearchFrameComponent implements OnInit {
 
   // @Output('search') searchEvent = new EventEmitter<Object>();
-  supportFields: string[] = ["id", "domain", "index",  "indexUrl", "genre",  "starname","director", "studio", "videoDomain"];
-  supportSorts: string[] = ['view', 'rating', 'duration','favorite', 'createdAt', 'releaseDate', 'updatedAt'];
+  supportFields: string[] = ["id", "notes", "videoUrl", "domain", "index",  "indexUrl", "genre",  "starname","director", "studio", "videoDomain"];
+  supportSorts: string[] = ['view', 'rating', 'duration','favorite', 'releaseDate'];
   supportSortsOn: string [] = ["domain",   "genre",  "starname","director", "studio", "videoDomain" ];
   currentField: string = this.supportFields[0];
   currentValue: string = null;
@@ -36,7 +36,7 @@ export class SearchFrameComponent implements OnInit {
         if(data['sort']){
           this.currentSort = data['sort'];
         }else{
-          this.currentSort = "createdAt";
+          this.currentSort = "releaseDate";
         }
       }
     //}

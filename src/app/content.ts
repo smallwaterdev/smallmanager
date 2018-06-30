@@ -23,7 +23,7 @@ export class Content{
     releaseDate: string;
     favorite:number;
     rating:number;
-    effective: boolean;
+    status: number;
     createdAt: string;
     updatedAt: string;
     version: number;

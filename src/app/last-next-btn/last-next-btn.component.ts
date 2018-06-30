@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {UrlService} from '../url.service';
-import {ContentService} from '../content.service'
+import {UrlService} from '../services/url.service';
+import {QueryContentService} from '../services/query-content.service';
 
 import { Observable, Subscription } from 'rxjs';
 @Component({
@@ -15,7 +15,7 @@ export class LastNextBtnComponent implements OnInit {
   itemNumber: number;
   currentPage: number = 1;
   routerEvent: Subscription;
-  constructor(private router: Router, private url: UrlService, private contentService:ContentService) { }
+  constructor(private router: Router, private url: UrlService, private queryService:QueryContentService) { }
 
   next(){
     if(this.currentPage + 1 <= this.itemNumber){
@@ -93,9 +93,9 @@ export class LastNextBtnComponent implements OnInit {
     //if(this.router.url.indexOf('/list/') !== -1){
       let data = this.url.convertUrl2Request(this.router.url);
       if(data['field'] && data['value']){
-        this.contentService.queryFieldValueNumber(data['field'], data['value']).subscribe(result=>{
-          if(result && result['result']){
-            this.itemNumber = Math.ceil(result['result'] / 20);
+        this.queryService.queryFieldValueNumber(data['field'], data['value']).subscribe(item_number=>{
+          if(item_number !== -1){
+            this.itemNumber = Math.ceil(item_number / 20);
             if(data['page']){
               this.updatePageArray(this.itemNumber, data['page']);
             }else{
@@ -115,18 +115,19 @@ export class LastNextBtnComponent implements OnInit {
       console.log('[Last/NextBtn] Nav from search frame');
       if(evt.url.indexOf('/list/') !== -1){
         let data = this.url.convertUrl2Request(evt.url);
-        this.contentService.queryFieldValueNumber(data['field'], data['value']).subscribe(result=>{
-            if(result && result['result']){
-              this.itemNumber = Math.ceil(result['result'] / 20);
-              if(data['page']){
-                this.updatePageArray(this.itemNumber, data['page']);
-              }else{
-                this.updatePageArray(this.itemNumber, 1);
-              }
+        this.queryService.queryFieldValueNumber(data['field'], data['value']).subscribe(result=>{
+          console.log(result);
+          if(result !== 0){
+            this.itemNumber = Math.ceil(result['result'] / 20);
+            if(data['page']){
+              this.updatePageArray(this.itemNumber, data['page']);
             }else{
-              this.itemNumber = 1;
               this.updatePageArray(this.itemNumber, 1);
             }
+          }else{
+            this.itemNumber = 1;
+            this.updatePageArray(this.itemNumber, 1);
+          }
         });
       }
     });

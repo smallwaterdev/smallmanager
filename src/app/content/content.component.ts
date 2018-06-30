@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output} from '@angular/core';
-import { ContentService } from '../content.service';
+import { QueryContentService } from '../services/query-content.service';
 import { DomSanitizer } from '@angular/platform-browser';
-//import { contents } from '../contents';
+import { UpdateContentService} from '../services/update-content.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Content, VideoUrl } from '../content';
-import {ErrorMessageService} from '../error-message.service';
+import {ErrorMessageService} from '../services/error-message.service';
 @Component({
   selector: 'content',
   templateUrl: './content.component.html',
@@ -32,7 +32,8 @@ export class ContentComponent implements OnInit {
   isEditing: boolean = false;
   modify_content: string;
   constructor(
-    private contentService: ContentService, 
+    private queryService: QueryContentService, 
+    private updateService: UpdateContentService,
     private sanitizer: DomSanitizer, 
     private route: ActivatedRoute,
     private location: Location,
@@ -78,10 +79,17 @@ export class ContentComponent implements OnInit {
   }
 
   getContent(useCache: boolean): void{
-    this.contentService.queryContentById(useCache, this.contentId).subscribe(data=>{
+    this.queryService.queryContentById(useCache, this.contentId).subscribe(data=>{
       this.content = data;
       this.modify_content = JSON.stringify(this.content, null, 2);
+      
     });
+  }
+  ngAfterViewChecked(){
+    let ready = document.getElementById('extension-mounting-point');
+      if(ready){
+        ready.click();
+      }
   }
   ngOnInit() {
     this.getContent(true);
@@ -124,14 +132,14 @@ export class ContentComponent implements OnInit {
     if(!this.isEditing){
       this.isEditing = true;
     }else{
-      this.contentService.updateContentById(this.content.id, JSON.parse(this.modify_content)).subscribe(
+      this.updateService.updateContentById(this.content.id, JSON.parse(this.modify_content)).subscribe(
         ele=>{ console.log(ele); this.showUpdateMessage = true;},
         err=>{ this.errorMsg.add(err.message);}
       );
     }
   }
   remove(){
-    this.contentService.removeContentById(this.content.id).subscribe(
+    this.updateService.removeContentById(this.content.id).subscribe(
       ele=>{ console.log(ele); this.showRemoveMessage = true;},
       err=>{ this.errorMsg.add(err.message);}
     );

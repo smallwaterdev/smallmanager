@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Content } from '../content';
-import { ContentService } from '../content.service';
+import { QueryContentService } from '../services/query-content.service';
 import {SearchStruct} from '../search-structure';
 import { ActivatedRoute , Router, NavigationEnd} from '@angular/router';
-import { UrlService } from '../url.service';
+import { UrlService } from '../services/url.service';
 import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-home',
@@ -15,9 +15,9 @@ export class HomeComponent implements OnInit {
   contents: Map<string, Content>;
   contentIds: string[];
   itemPrePage: number = 20;
-  defaultSort : string = "createdAt";
+  defaultSort : string = "releaseDate";
   routerEvent: Subscription;
-  constructor(private contentService: ContentService, private router: Router, private url: UrlService ) { 
+  constructor(private queryService: QueryContentService, private router: Router, private url: UrlService ) { 
     
   }
   convert2Int(value: any): number{
@@ -60,15 +60,22 @@ export class HomeComponent implements OnInit {
     }
     return result;
   }
-
-  getContents(field: string, value:string, sort:any, page:number){
+  /**
+   * query one page of (20) contents
+   * fields
+   * values:
+   * sort: if sort undefined, then "releaseDate"
+   * pagenumber from 1
+   * 
+  */
+  getContents(fields: string, values:string, sort:any, page:number){
     if(typeof sort !== 'string'){
-      sort = 'createdAt';
+      sort = 'releaseDate';
     }
     if(!page || (typeof page === 'number' && page < 1)){
       page = 1;
     }
-    let data_source = this.contentService.queryContents( field, value, sort, (page - 1) * this.itemPrePage, this.itemPrePage)
+    let data_source = this.queryService.queryContents( fields, values, sort, (page - 1) * this.itemPrePage, this.itemPrePage)
     if(data_source){
       data_source.subscribe(data=>{
         if(data){

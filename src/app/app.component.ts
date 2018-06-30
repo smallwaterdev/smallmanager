@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {WindowScrollService} from './window-scroll.service';
+import {WindowScrollService} from './services/window-scroll.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,5 +10,7 @@ export class AppComponent {
   ngOnInit(){
     this.windowScroller.start();
   }
-
+  goTop(){
+    window.scrollTo(0,0);
+  }
 }

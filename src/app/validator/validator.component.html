@@ -1,0 +1,54 @@
+<div class="container">
+  <h5>Validate Video Content</h5>
+  <div class="mb-3">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Validate by video domain</span>
+    </div>
+    <select  #videoDomainValue class="custom-select">
+      <option *ngFor="let videodomain of videodomains"  [value]="videodomain">{{videodomain}}</option>
+    </select>
+    <input type="number" class="form-control" value="0" #fromValue placeholder="from">
+    <input type="number" class="form-control" value="0" #limitValue placeholder="limit">
+    <div class="input-group-append">
+      <button class="btn btn-primary" [disabled]="!isOkToRun" (click)="toggle_start('videoDomain', videoDomainValue.value, fromValue.value, limitValue.value)">Start</button>
+    </div>
+  </div>
+</div>
+<div class="mb-3">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Validate by domain</span>
+    </div>
+    <select  #videoDomainValue2 class="custom-select">
+      <option *ngFor="let domain of domains"  [value]="domain">{{domain}}</option>
+    </select>
+    <input type="number" class="form-control" value="0" #fromValue2 placeholder="from">
+    <input type="number" class="form-control" value="0" #limitValue2 placeholder="limit">
+    <div class="input-group-append">
+      <button class="btn btn-primary" [disabled]="!isOkToRun" (click)="toggle_start('domain', videoDomainValue2.value, fromValue2.value, limitValue2.value)">{{isStarted? "Stop":"Start"}}</button>
+    </div>
+  </div>
+  </div>
+  <div id="msg" class="row">
+    <div id="error_msg" class="col-md-4 col-12">
+      <div class=" border border-danger">
+      <h6>Error {{error_message.length}}</h6>
+      <p *ngFor="let msg of error_message"><a [href]="'/content/' + msg[0]" target="_blank">{{msg[0]}}</a> {{msg[1]}}</p>
+        </div>
+    </div>
+    <div id="warning_msg" class="col-md-4 col-12">
+        <div class="border border-warning">
+        <h6>Warning {{warning_message.length}}</h6>
+      <p *ngFor="let msg of warning_message"><a [href]="'/content/' + msg[0]"  target="_blank">{{msg[0]}}</a> {{msg[1]}}</p>
+          </div>
+    </div>
+    <div id="normal_msg" class="col-md-4 col-12">
+        <div class="border border-primary">
+        <h6>Normal</h6>
+      <p *ngFor="let msg of normal_message">{{msg}}</p>
+      </div>
+    </div>
+  </div>
+  
+</div>

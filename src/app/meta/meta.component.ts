@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentService } from '../content.service';
-
+import { QueryContentService } from '../services/query-content.service';
+import { UpdateMetaCacheService } from '../services/update-meta-cache.service';
+import { NormalizeService} from '../services/normalize.service';
 @Component({
   selector: 'smallmanager-meta',
   templateUrl: './meta.component.html',
@@ -9,10 +10,15 @@ import { ContentService } from '../content.service';
 export class MetaComponent implements OnInit {
   
   fields: string[] = ['genre', 'videoDomain', 'domain', 'studio', 'director', 'starname'];
+  updatable_fields: string [] = ['genre', 'studio', 'director', 'starname'];
   meta: Map<string, Object>;
   keys: Map<string, string[]>;
-  
-  constructor(private contentService: ContentService) { 
+  disable_update: boolean = true;
+  constructor(
+    private querService: QueryContentService,
+    private metaCacheService: UpdateMetaCacheService,
+    private normalizeService: NormalizeService
+  ) { 
     this.meta = new Map<string, Object>();
     this.keys = new Map<string, string[]>();
   }
@@ -24,6 +30,43 @@ export class MetaComponent implements OnInit {
     this.fields.forEach(field=>{
       this.refreshMeta(field, this.meta, this.keys);
     })
+  }
+  isUpdatable(field){
+    return (this.updatable_fields.indexOf(field) !== -1);
+  }
+  updateField(field, oldValue, newValue){
+    if(this.disable_update){
+      alert('Please enable update');
+      return;
+    }
+    this.normalizeService.batchUpdateField(field,oldValue, newValue).subscribe(
+      result=>{
+        alert(JSON.stringify(result));
+      }
+    );
+  }
+  toggle_update(){
+    this.disable_update = !this.disable_update;
+  }
+  deleteField(field:string, value:string){
+    if(this.disable_update){
+      alert('Please enable update');
+      return;
+    }
+    this.normalizeService.batchDeleteField(field, value).subscribe(
+      result=>{
+        alert(JSON.stringify(result));
+      }
+    );
+  }
+  updateEffective(item, isOn){
+    /*if(this.disable_update){
+      alert('Please enable update');
+      return;
+    }
+    this.contentService.batchUpdateFieldByAnother('videoDomain', item, 'effective', isOn).subscribe(result=>{
+      alert(JSON.stringify(result));
+    });*/
   }
   captalize(value: string){
     if(value && value.length > 1){
@@ -48,7 +91,7 @@ export class MetaComponent implements OnInit {
   }
   refreshMeta(field:string, meta: Map<string, Object>, keys: Map<string, string[]>){
     if(this.fields.indexOf(field) !== -1){
-      this.contentService.queryMeta(field).subscribe(data=>{
+      this.querService.queryMeta(field).subscribe(data=>{
         if(data){
           let key = Object.keys(data);
           let sort_key = [];
@@ -69,5 +112,41 @@ export class MetaComponent implements OnInit {
         }
       });
     }
+  }
+  normalizeMetaCache(field, value){
+    /*this.contentService.normalizeMetaCache(field, value).subscribe(data=>{
+      console.log(data);
+    });*/
+  }
+
+
+  // metacache
+  updateMetaCache(field: string){
+    this.metaCacheService.updateMetaCache(field).subscribe(
+      data=>{
+        alert(JSON.stringify(data));
+      }
+    );
+  }
+  removeMetaCache(field: string, name: string){
+    this.metaCacheService.removeMetaCache(field, name).subscribe(
+      data=>{
+        alert(JSON.stringify(data));
+      }
+    );
+  }
+  uploadProfile(field: string, name: string, url: string){
+    this.metaCacheService.uploadProfileUrl(field, name, url).subscribe(
+      data=>{
+        alert(JSON.stringify(data));
+      }
+    );
+  }
+  updateMetaCacheALL(){
+    this.metaCacheService.updateMetaCacheMetaALL().subscribe(
+      data=>{
+        alert(JSON.stringify(data));
+      }
+    );
   }
 }

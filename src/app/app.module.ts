@@ -25,6 +25,9 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ValidatorComponent } from './validator/validator.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,14 +39,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
     HomeComponent,
     ErrorComponent,
     TopNavComponent,
-    
     NotFoundComponent,
-    
     MetaComponent,
-    
     LastNextBtnComponent,
-    
-    HomepageComponent
+    HomepageComponent,
+    ValidatorComponent
   ],
   imports: [
     BrowserModule,
@@ -52,12 +52,12 @@ import {MatGridListModule} from '@angular/material/grid-list';
     AppRoutingModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
-
     MatButtonModule, 
     MatCheckboxModule,
     MatTabsModule,
     MatProgressSpinnerModule,
-    MatGridListModule
+    MatGridListModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

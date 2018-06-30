@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ContentService} from '../content.service';
+
 import { Content} from '../content';
 @Component({
   selector: 'contentlist',
@@ -9,7 +9,7 @@ import { Content} from '../content';
 export class ContentlistComponent implements OnInit {
   @Input() contents: Map<string, Content>;
   @Input() contentIds: string[];
-  constructor(private contentService: ContentService) { 
+  constructor() { 
     
   }
   ngOnInit(){

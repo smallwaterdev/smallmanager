@@ -27,18 +27,60 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-
 ///////////////////////////////// message delivering service ///////////////////////////
-let frameId = new Map();
+let address_record = {};
+/**
+ * {
+ *  "windowId":
+ *    {
+ *       "tabId":
+ *          {
+ *            "frameId":
+ *          } 
+ *    }
+ * }
+ */
+function update_address_record(sender, name){
+  let tab = sender.tab;
+  let window_addr = address_record[tab.windowId];
+  if(window_addr !== undefined){
+    if(window_addr[tab.index] !== undefined){
+      window_addr[tab.index][name] = sender.frameId;
+    }else{
+      window_addr[tab.index] = {};
+      window_addr[tab.index][name] = sender.frameId;
+    }
+  }else{
+    address_record[tab.windowId] = {};
+    address_record[tab.windowId][tab.index] = {};
+    address_record[tab.windowId][tab.index][name] = sender.frameId;
+  }
+}
+function get_address_frame(windowId, index, name){
+  let window_ = address_record[windowId];
+  if(window_ !== undefined){
+    let tab_ = window_[index];
+    if(tab_ !== undefined){
+      let frameId = tab_[name];
+      if(frameId !== undefined){
+        return frameId;
+      }
+    }
+  }
+  return null;
+}
+// let valid_destination = ["background", "content", "rapidvideo_converter"];
 
-let valid_destination = ["background", "content", "rapidvideo_converter"];
-
-function sendMessageToFrame(to, message, callback){
-  let videoConverterFrameId = frameId.get(to);
-  if(videoConverterFrameId || videoConverterFrameId === 0){
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, message, { frameId:videoConverterFrameId}, callback);
-    });
+function sendMessageToFrame(sender, to, message, callback){
+  /*let query_condition = {
+    windowId: sender.tab.windowId,
+    index: sender.tab.index,
+  };*/
+  let frameId = get_address_frame(sender.tab.windowId, sender.tab.index, to);
+  if(frameId !== null){
+    //chrome.tabs.query(query_condition, function(tabs) {
+      chrome.tabs.sendMessage(sender.tab.id, message, { frameId:frameId}, callback);
+    //});
   }else{
     callback({status: "fail", reason: `destination ${to} not found`});
   }
@@ -49,19 +91,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse){
   if(request){
     switch(request.request){
       case "register":{
-        frameId.set(request.from, sender.frameId);
-        console.log(`${title} ${request.from} is registered with frame id ${sender.frameId}`);
+        update_address_record(sender, request.from);
+        console.log(`${title} Register ${request.from} is registered with window id ${sender.tab.windowId} tab index ${sender.tab.index} frame id ${sender.frameId}`);
         sendResponse({status:"success"});
-        
       };break;
       case "heartbeat":{
-        frameId.set(request.from, sender.frameId);
-        // console.log(`${title} ${request.from} is registered with frame id ${sender.frameId}`);
+        update_address_record(sender, request.from);
+        console.log(`${title} Heartbeat ${request.from} is registered with window id ${sender.tab.windowId} tab index ${sender.tab.index} frame id ${sender.frameId}`);
         sendResponse({status:"success"});
       }
       default: {
-        // forward
-        sendMessageToFrame(request.to, request, sendResponse);
+        sendMessageToFrame(sender, request.to, request, sendResponse);
         return true;
       };break;
     }
@@ -84,14 +124,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse){
  * 
  * * The event is not triggered in the first loading.
  */
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab){
+/*chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab){
   if(changeInfo.url && changeInfo.url.indexOf('/content/') !== -1){
     let data = changeInfo.url.split('/');
     if(data[data.length - 1] !== ""){
-      console.log(`${title} Content run`);
-      sendMessageToFrame('content', {from: 'background', to:'content', request: 'run'}, function(response){
-        console.log(response);
+      chrome.tabs.query({active: true}, function(tabs) {
+        tabs.forEach(tab=>{
+          chrome.tabs.sendMessage(tab.id,  {from: 'background', to:'content', request: 'run'}, function(response){
+            console.log(`${title} Send converting request to content ${tab.id}`);
+          });
+        });
       });
     }
   }
-});
+});*/
